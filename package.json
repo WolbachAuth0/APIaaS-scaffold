@@ -1,0 +1,59 @@
+{
+  "name": "cic-external-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev-front": "vue-cli-service serve --mode development",
+    "dev-api": "nodemon start.js",
+    "serve": "vue-cli-service serve --mode production",
+    "build": "vue-cli-service build --mode production",
+    "deploy": "git push heroku main --no-verify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@auth0/auth0-spa-js": "^1.19.3",
+    "@mdi/js": "^6.5.95",
+    "auth0": "^2.37.0",
+    "axios": "^0.24.0",
+    "buffer": "^6.0.3",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-jwt": "^6.1.0",
+    "express-jwt-authz": "^2.4.1",
+    "express-openid-connect": "^2.5.2",
+    "express-winston": "^4.2.0",
+    "helmet": "^4.6.0",
+    "jsonschema": "^1.4.0",
+    "jwks-rsa": "^2.0.5",
+    "moment": "^2.29.1",
+    "serve-static": "^1.14.1",
+    "vue": "^2.6.11",
+    "vue-content-loading": "^1.6.0",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.5.3",
+    "vuelidate": "^0.7.7",
+    "vuetify": "^2.6.12",
+    "vuex": "^3.6.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "dotenv-flow": "^3.2.0",
+    "nodemon": "^2.0.15",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.4.4",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0"
+  },
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  }
+}
