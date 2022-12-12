@@ -19,7 +19,7 @@ export const useAuth0 = ({
   redirectUri = DEFAULT_REDIRECT_URI,
   ...options
 }) => {
-  // if (instance) return instance
+  if (instance) return instance
 
   instance = new Vue({
     data() {
