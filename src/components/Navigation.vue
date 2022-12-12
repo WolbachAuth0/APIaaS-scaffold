@@ -1,13 +1,19 @@
 <template>
 	<div>
 		<!-- Application bar -->
-		<v-app-bar app clipped-left dark class="primary accent-3">
-
+		<v-app-bar
+			app
+			clipped-left
+			absolute 
+			:dark="isDark"
+			:light="!isDark"
+			class="primary accent-3"
+		>
 			<a id="logo" :href="oktahomeURL" target="__blank">
 				<v-img :src="logo" contain max-height="50" max-width="225"></v-img>
 			</a>
 			
-      <v-toolbar-title>
+      <v-toolbar-title :class="{ 'white--text': !isDark }">
 				{{ appTitle }}
 			</v-toolbar-title>
 
@@ -40,22 +46,12 @@ export default {
 		Drawer
 	},
 	data: () => ({
-		logo: require('../assets/okta-logo-white.svg'),
 		auth0docs: require('../assets/auth0docs.svg'),
 		oktahomeURL: 'https://www.okta.com/',
 		auth0docsURL: 'https://auth0.com/docs',
 	}),
 	props: {
 		appTitle: String 
-	},
-	computed: {
-
-	},
-	async mounted () {
-
-  },
-	methods: {
-    
 	}
 }
 </script>

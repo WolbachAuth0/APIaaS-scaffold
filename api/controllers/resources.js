@@ -13,6 +13,16 @@ module.exports = {
   }
 }
 
+function handleError (req, res, error) {
+  const payload = {
+    status: parseInt(error.statusCode) || 500,
+    message: error.message || 'An error occurred.',
+    data: error
+  }
+  const json = responseFormatter(req, res, payload)
+  res.status(payload.status).json(json)
+}
+
 async function list (req, res, next) {
 
 }

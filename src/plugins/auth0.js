@@ -9,7 +9,7 @@ import { Buffer } from 'buffer'
 /** Define a default action to perform after authentication */
 const DEFAULT_REDIRECT_CALLBACK = () => window.history.replaceState({}, document.title, window.location.pathname)
 const DEFAULT_REDIRECT_URI = `${process.env.VUE_APP_DOMAIN}/profile`
- 
+
 let instance
 
 export const getInstance = () => instance
@@ -19,7 +19,7 @@ export const useAuth0 = ({
   redirectUri = DEFAULT_REDIRECT_URI,
   ...options
 }) => {
-  if (instance) return instance
+  // if (instance) return instance
 
   instance = new Vue({
     data() {
@@ -76,18 +76,18 @@ export const useAuth0 = ({
         return this.auth0Client.loginWithRedirect(options)
       },
       /**
-       * gives you the raw (undecoded) ID token
-       * @param {*} opts 
-       * @returns 
-       */
+      * gives you the raw (undecoded) ID token
+      * @param {*} opts 
+      * @returns 
+      */
       getIdTokenClaims (opts) {
         return this.auth0Client.getIdTokenClaims(opts)
       },
       /**
-       * gives you the raw (undecoded) Access Token
-       * @param {*} opts 
-       * @returns 
-       */
+      * gives you the raw (undecoded) Access Token
+      * @param {*} opts 
+      * @returns 
+      */
       getTokenSilently (opts) {
         return this.auth0Client.getTokenSilently(opts)
       },
@@ -100,10 +100,10 @@ export const useAuth0 = ({
         return accessTokenDecoded.permissions
       },
       /**
-       * Decodes a token and returns a javascript object
-       * @param {String} token A base64 encoded token (access or id) 
-       * @returns 
-       */
+      * Decodes a token and returns a javascript object
+      * @param {String} token A base64 encoded token (access or id) 
+      * @returns 
+      */
       decodeToken (token) {
         const base64Payload = token.split('.')[1]
         const payload = Buffer.from(base64Payload, 'base64')
@@ -120,12 +120,9 @@ export const useAuth0 = ({
         client_id: options.clientId,
         redirect_uri: redirectUri,
       })
-
       try {
-        if (
-          window.location.search.includes('code=') &&
-          window.location.search.includes('state=')
-        ) {
+        const search = window.location.search
+        if (search.includes('code=') && search.includes('state=')) {
           const { appState } = await this.auth0Client.handleRedirectCallback()
           this.error = null
           onRedirectCallback(appState)
@@ -145,5 +142,6 @@ export const useAuth0 = ({
 export const Auth0Plugin = {
   install(Vue, options) {
     Vue.prototype.$auth = useAuth0(options)
-  },
+  }
 }
+ 

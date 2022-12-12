@@ -28,13 +28,17 @@ if(process.env.NODE_ENV === 'production') {
   // oidc will not work without https
   app.use(enforceHTTPS)
 }
-app.use(oidcMiddleware)
+// app.use(oidcMiddleware)
 app.use('/', serveStatic(path.join(__dirname, './../dist')))
 
 // API routes
-app.use('/api', require('./routes')) // should serve api spec
-app.use('/api/v1/resources', require('./routes/resources'))
+const home = require('./routes')                  // The root endpoints
+const admin = require('./routes/admin')                  // The endpoints for the SPA
+const resources = require('./routes/resources')   // The External facing API endpoints
 
+app.use('/api', home)
+app.use('/api/admin', admin)
+app.use('/api/v1/resources', resources)
 
 // this * route is to serve project on different page routes except root `/`
 app.get(/.*/, (req, res) => {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Theme from './theme.js'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,7 @@ const options = {
 
   },
   modules: {
-
+    Theme
   }
 }
 
