@@ -1,81 +1,27 @@
-  
-import { getInstance } from '@/plugins/auth0'
+import { getInstance } from '@/plugins/auth0.js'
 
-export const authenticationGuard = (to, from, next) => {
+export const authGuard = (to, from, next) => {
   const authService = getInstance()
 
-  // If the Auth0Plugin has loaded already, check the authentication state
-  if (!authService.isLoading) {
-    return guardAction()
-  }
-
-  authService.$watch("isLoading", (isLoading) => {
-    if (isLoading === false) {
-      return guardAction()
-    }
-  })
-
-  function guardAction() {
+  const fn = () => {
+    // If the user is authenticated, continue with the route
     if (authService.isAuthenticated) {
       return next()
     }
-  
-    const options = {
-      appState: {
-        targetUrl: to.fullPath
-      }
-    }
-    authService.loginWithRedirect(options);
-  }
-}
 
-
-export const roleGuardian = function (rolename) {
-  
-  return function (to, from, next) {
-
-    const authService = getInstance()
-    if (!authService.isLoading) {
-      return guardAction()
-    }
-    authService.$watch("isLoading", isLoading => {
-      if (isLoading === false) {
-        return guardAction()
-      }
-    })
-
-    function guardAction () {
-      // if isAuthenticated && hasRole
-      if (authService.isAuthenticated && hasRole()) {
-        return next()
-      }
-      if (authService.isAuthenticated) {
-        return next({ path: '/profile' })
-      }
-  
-      forceLogin()
-    }
-
-    function hasRole () {
-      if (!authService.isAuthenticated) { return false }
-      const roles = authService.user['science-experiment/roles'] ?? []
-      const hasRole = !rolename || roles.includes(rolename)
-      return hasRole
-    }
-
-    function forceLogin () {
-      const options = {
-        appState: {
-          targetUrl: to.fullPath
-        }
-      }
-      authService.loginWithRedirect(options)
-    }
+    // Otherwise, log in
+    authService.loginWithRedirect({ appState: { targetUrl: to.fullPath } });
   }
 
+  // If loading has already finished, check our auth state using `fn()`
+  if (!authService.isLoading) {
+    return fn()
+  }
+
+  // Watch for the loading property to change before we check isAuthenticated
+  authService.$watch('isLoading', isLoading => {
+    if (isLoading === false) {
+      return fn()
+    }
+  })
 }
-
-
-/**
- * Valid roles as of this writing are, 'Administrator', 'Organization Owner', 'Member'
- */

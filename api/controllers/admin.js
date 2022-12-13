@@ -1,5 +1,8 @@
 const responseFormatter = require('./../middleware/responseFormatter')
-const scopes = []
+const scopes = [
+  'read:users',
+  'read:user_idp_tokens'
+]
 const management = require('./../models/management')(scopes)
 
 module.exports = {
@@ -19,6 +22,7 @@ function handleError (req, res, error) {
 
 async function getUserProfile (req, res, next) {
   const id = req.params.user_id
+  console.log('get User Profile')
   try {
     const data = await management.getUser({ id })
     const payload = {
@@ -29,6 +33,7 @@ async function getUserProfile (req, res, next) {
     const json = responseFormatter(req, res, payload)
     res.status(payload.status).json(json)
   } catch (error) {
+    console.log('An error occurred', error)
     handleError(req, res, error)
   }
 }
