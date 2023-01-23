@@ -22,6 +22,10 @@
           <v-card>
             <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
             
+            <v-card-title>
+              User Profile
+            </v-card-title>
+
             <v-list-item class="px-2">
               <v-list-item-avatar>
                 <img :src="profile.picture" :alt="profile.name">
@@ -155,13 +159,16 @@ export default {
   },
   methods: {
     async fetchProfile () {
+      this.progress.indeterminate = true
       const userId = this.$auth.user.sub
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/admin/profile/${userId}`)
+      this.progress.indeterminate = false
       return response.data
     },
     async updateProfile () {
       this.progress.indeterminate = true
+      const userId = this.$auth.user.sub
       const accesstoken = await this.$auth.getTokenSilently()
       const body = {
         given_name: this.profile.given_name,
@@ -170,10 +177,9 @@ export default {
         name: this.profile.name,
         picture: this.profile.picture,
         user_metadata: {
-          enableMFA: this.profile.enableMFA
         }
       }
-      const response = await this.$http(accesstoken).patch(`/users/${this.$auth.user.sub}`, body)
+      const response = await this.$http(accesstoken).patch(`/admin/profile/${userId}`, body)
       const announcement = {
         text: response.data.message,
         type: response.data.success ? 'success' : 'error',

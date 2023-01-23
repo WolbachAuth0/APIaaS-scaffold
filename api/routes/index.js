@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const path = require('path')
 const responseFormatter = require('../middleware/responseFormatter')
 
 module.exports = router
@@ -9,11 +10,7 @@ router
     try {
       const status = 200
       const message = 'Hello from the API server !'
-      const data = {
-        isAuthenticated: req.oidc.isAuthenticated(),
-        identity: req.oidc.user,
-        claims: req.oidc.idTokenClaims
-      }
+      const data = {}
       const json = responseFormatter(req, res, { status, message, data })
       res.status(status).json(json)
     } catch (error) {

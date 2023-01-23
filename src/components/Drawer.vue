@@ -59,7 +59,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item to="/developer">
+        <!-- <v-list-item to="/developer">
           <v-list-item-icon>
             <v-icon>{{ icons.mdiCogOutline }}</v-icon>
           </v-list-item-icon>
@@ -69,7 +69,7 @@
               Developer
             </v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
         <v-list-item v-if="$auth.isAuthenticated" @click="logout()" class="px-2 primary">
 					<v-list-item-icon>
