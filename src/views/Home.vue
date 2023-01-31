@@ -3,11 +3,22 @@
 
     <v-card class="pa-6" color="surface">
       <v-row>
+        <v-col cols=12>
+          <v-card>
+            <v-card-title>
+              <h1>{{ title }}</h1>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+
+
+      <v-row>
         <v-col cols=6>
           <v-card>
             <v-progress-linear value="100" height="20" class="primary--text"></v-progress-linear>
             <v-card-title>
-              <h1>{{ main.title }}</h1>
+              <h2>{{ main.title }}</h2>
             </v-card-title>
             <v-card-text v-for="(para, i) of main.paragraphs" :key="i">
               
@@ -52,7 +63,7 @@ export default {
     return {
       title: 'Welcome!',
       main: {
-        title: 'Welcome!',
+        title: 'Register for API Credentials',
         paragraphs: [
           {
             subtitle: 'Purpose',
