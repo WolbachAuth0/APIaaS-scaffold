@@ -22,9 +22,9 @@ class M2MClient {
   }
 
   async create ({ userid }) {
-    const body = {
-      name: 'm2m-',
-      description: 'The Client Credentials for user',
+    const params = {
+      name: `m2m-${userid}`,
+      description: `The Client Credentials for user ${userid}`,
       logo_uri: 'https://cdn-icons-png.flaticon.com/512/2165/2165022.png',
       allowed_clients: [],
       callbacks: [],
@@ -50,6 +50,18 @@ class M2MClient {
         rotation_type: 'non-rotating'
       }
     }
+
+    try {
+      const data = await this.api.createClient(params)
+      const payload = {
+        status: 200,
+        message: `Found clients.`,
+        data 
+      }
+      return payload
+    } catch (error) {
+      return errorHandler(error)
+    }
   }
 
   async listAll ({ per_page, page }, userid) {
@@ -73,7 +85,7 @@ class M2MClient {
   }
 
   async read ({ clientid }) {
-
+    
   }
 
   async update () {
