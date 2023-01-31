@@ -20,3 +20,15 @@ router.route('/profile/:user_id')
     // schemaValidator(),
     admin.updateProfile 
   )
+
+router.route('/clients')
+  // .all(verifyJWT)
+  // .all(checkJWTUserID)
+  .get(
+    admin.getM2MClients
+  )
+
+router.route('/clients/:client_id')
+  .get(
+    admin.getM2MClientById
+  )

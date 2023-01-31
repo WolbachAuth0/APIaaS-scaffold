@@ -1,4 +1,5 @@
 const management = require('./../models/management')
+const errorHandler = require('./ErrorHandler')
 
 class M2MClient {
   constructor () {
@@ -20,7 +21,7 @@ class M2MClient {
     this.api = management(scopes)
   }
 
-  async create ({ metadata={}, userid }) {
+  async create ({ userid }) {
     const body = {
       name: 'm2m-',
       description: 'The Client Credentials for user',
@@ -37,7 +38,7 @@ class M2MClient {
       cross_origin_auth: false,
       custom_login_page_on: true,
       client_metadata: {
-    
+        userid
       },
       refresh_token: {
         expiration_type: 'non-expiring',
@@ -51,7 +52,27 @@ class M2MClient {
     }
   }
 
-  async read () {
+  async listAll ({ per_page, page }, userid) {
+    const params = { per_page, page }
+    
+    try {
+      const clients = await this.api.getClients(params)
+      const data = clients.filter(x => {
+        const isM2M = x.app_type == 'non_interactive'
+        return isM2M
+      })
+      const payload = {
+        status: 200,
+        message: `Found clients.`,
+        data 
+      }
+      return payload
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+
+  async read ({ clientid }) {
 
   }
 
@@ -63,7 +84,9 @@ class M2MClient {
 
   }
 
-  async upateGrant () {}
+  async upateGrant () {
+
+  }
 }
 
 module.exports = M2MClient
