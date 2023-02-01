@@ -22,13 +22,20 @@ router.route('/profile/:user_id')
   )
 
 router.route('/clients')
-  // .all(verifyJWT)
+  .all(verifyJWT)
   // .all(checkJWTUserID)
   .get(
-    admin.getM2MClients
+    admin.listM2MClients
+  )
+  .post(
+    admin.createM2MClient
   )
 
 router.route('/clients/:client_id')
+  .all(verifyJWT)  
   .get(
     admin.getM2MClientById
+  )
+  .delete(
+    admin.deleteM2MClientById
   )

@@ -8,7 +8,7 @@
 
     <v-list-item class="px-2">
       <v-list-item-avatar>
-        <img :src="profile.picture" :alt="profile.name">
+        <img :src="profile.picture" :alt="profile.name" referrerpolicy="no-referrer">
       </v-list-item-avatar>
       <v-list-item-title>
         {{ profile.email }}
