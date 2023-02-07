@@ -13,7 +13,13 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:[`item.client_id`]="{ item }">
-        <v-btn class="mx-2" fab dark small color="error">
+        <v-btn class="mx-2" dark small color="primary">
+          <v-icon dark @click="clientDetail(item.client_id)">
+            {{ icons.mdiNotificationClearAll }}
+          </v-icon>
+        </v-btn>
+        
+        <v-btn class="mx-2" dark small color="error">
           <v-icon dark @click="removeClient(item.client_id)">
             {{ icons.mdiTrashCanOutline }}
           </v-icon>
@@ -34,7 +40,7 @@
 <script>
 import EventBus from './../helpers/eventBus.js'
 import ClientDialog from './ClientDialog.vue'
-import { mdiTrashCanOutline } from '@mdi/js'
+import { mdiTrashCanOutline, mdiNotificationClearAll } from '@mdi/js'
 
 export default {
   name: 'ClientCredentials',
@@ -45,7 +51,7 @@ export default {
     return {
       showDialog: false,
       icons: {
-        mdiTrashCanOutline
+        mdiTrashCanOutline, mdiNotificationClearAll
       },
       progress: {
         indeterminate: false
@@ -55,6 +61,10 @@ export default {
           text: 'Name',
           align: 'start',
           value: 'name',
+        },
+        {
+          text: 'Tier',
+          value: 'client_metadata.tier'
         },
         {
           text: '',
@@ -104,6 +114,7 @@ export default {
     },
     hideDialog () {
       this.showDialog = false
+      this.refreshTable()
     }
   }
 }
