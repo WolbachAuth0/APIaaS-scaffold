@@ -49,7 +49,7 @@
 
         <v-list-item v-if="$auth.isAuthenticated" to="/profile">
           <v-list-item-icon>
-            <v-icon>{{ icons.mdiAccountCircle }}</v-icon>
+            <v-icon>{{ icons.mdiAccountDetails }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -99,6 +99,7 @@
 import {
   mdiHomeCircle,
   mdiAccountCircle,
+  mdiAccountDetails,
   mdiShieldHome,
   mdiMonitorDashboard,
   mdiApplicationCog,
@@ -114,6 +115,7 @@ export default {
     return {
       icons: {
         mdiHomeCircle,
+        mdiAccountDetails,
         mdiAccountCircle,
         mdiShieldHome,
         mdiMonitorDashboard,
