@@ -63,10 +63,11 @@ class M2MClient {
     }
   }
 
-  async create ({ user_id, tier }) {
+  // CRUD the M2M Clients
+  async create ({ user_id, tier, name }) {
     const params = {
-      name: `m2m-for-user-${user_id}`,
-      description: `The Client Credentials for user ${user_id}`,
+      name: `${name}`,
+      description: `Client Credentials for user ${user_id}`,
       logo_uri: 'https://raw.githubusercontent.com/WolbachAuth0/auth0-m2m-demo/main/public/api-icon.png',
       allowed_clients: [],
       callbacks: [],
@@ -79,14 +80,16 @@ class M2MClient {
       cross_origin_auth: false,
       custom_login_page_on: true,
       client_metadata: {
-        user_id
+        user_id,
+        tier,
+        name
       }
     }
 
     try {
       const client = await this.api.createClient(params)
       const grants = await this.createGrant({ client_id: client.client_id, tier })
-      console.log(grants)
+      
       const data = Object.assign(client, { grants })
       const payload = {
         status: 200,
@@ -115,7 +118,7 @@ class M2MClient {
             tenant: x.tenant,
             name: x.name,
             client_id: x.client_id,
-            client_secret: x.client_secret,
+            // client_secret: x.client_secret,
             jwt_configuration: x.jwt_configuration,
             token_endpoint_auth_method: x.token_endpoint_auth_method,
             app_type: x.app_type,
@@ -162,9 +165,10 @@ class M2MClient {
     }
   }
 
-  async remove ({ client_id }) {
+  async remove ({ client_id, user_id }) {
     try {
-      const data = await this.api.deleteClient({ client_id  })
+      const data = await this.api.deleteClient({ client_id, user_id  })
+      const updateUser = await this.removeClientFromUser({ client_id, user_id  })
       const payload = {
         status: 200,
         message: `Deleted M2M client ${client_id}`,
@@ -176,6 +180,7 @@ class M2MClient {
     }
   }
 
+  // CRUD the Grants
   async createGrant ({ client_id, tier }) {
     const params = {
       client_id,
@@ -188,6 +193,37 @@ class M2MClient {
 
   async upateGrant ({ grant_id, tier }) {
     
+  }
+
+  // Update the User
+  async getUserAppMetadata ({ user_id }) {
+    // read the users app_metadata
+    const user = await this.api.getUser({ user_id })
+    let app_metadata = user.app_metadata || {}
+    const m2m_clients = app_metadata?.m2m_clients && Array.isArray(app_metadata.m2m_clients) ? app_metadata.m2m_clients : []
+    app_metadata.m2m_clients = m2m_clients
+    return app_metadata
+  }
+
+  async addClientToUser ({ user_id, }, { client_id, tier, name }) {
+    // get the user's app_metadata
+    const app_metadata = await this.getUserAppMetadata({ user_id })
+    
+    // push the new client to the app metadata
+    const client = { client_id, tier, name }
+    if (app_metadata.m2m_clients.filter(x => x.client_id == client_id && x.tier == tier) == 0) {
+      app_metadata.m2m_clients.push(client)
+    }
+    return await this.api.updateAppMetadata({ id: user_id }, app_metadata)
+  }
+
+  async removeClientFromUser ({ client_id, user_id }) {
+    // get the user's app_metadata
+    const app_metadata = await this.getUserAppMetadata({ user_id })
+    // filter out the client to be removed
+    app_metadata.m2m_clients = app_metadata.m2m_clients.filter(x => x.client_id !== client_id)
+    // update the user app_metadata
+    return await this.api.updateAppMetadata({ id: user_id }, app_metadata)
   }
 }
 

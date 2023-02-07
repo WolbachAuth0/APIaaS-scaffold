@@ -97,7 +97,7 @@ export default {
       this.progress.indeterminate = true
       const body = {
         user_id: this.$auth.user.sub,
-        name: this.form.name,
+        name: this.form.name.value,
         tier: this.form.tier.value
       }
 
@@ -114,7 +114,7 @@ export default {
         left: false
       }
       EventBus.$emit('announce', announcement)
-
+      EventBus.$emit('hideClientDialog', true)
     }
   }
 }
