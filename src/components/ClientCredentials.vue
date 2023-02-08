@@ -7,20 +7,14 @@
     <v-data-table
       :headers="headers"
       :items="clients"
-      item-key="name"
+      item-key="client_id"
       class="elevation-1"
       :loading="progress.indeterminate"
       loading-text="Loading... Please wait"
     >
-      <template v-slot:[`item.client_id`]="{ item }">
-        <v-btn class="mx-2" dark small color="primary">
-          <v-icon dark @click="clientDetail(item.client_id)">
-            {{ icons.mdiNotificationClearAll }}
-          </v-icon>
-        </v-btn>
-        
+      <template v-slot:[`item.client_id`]="{ item }">       
         <v-btn class="mx-2" dark small color="error">
-          <v-icon dark @click="removeClient(item.client_id)">
+          <v-icon dark @click="areYouSure(item.client_id)">
             {{ icons.mdiTrashCanOutline }}
           </v-icon>
         </v-btn>
@@ -34,6 +28,56 @@
     </v-card-actions>
     
     <client-dialog :show="showDialog"></client-dialog>
+
+    <v-dialog v-model="confirmation" width="60%" transition="dialog-bottom-transition">
+      <v-card>
+        <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+        
+        <v-card-title>
+          Are you sure?
+        </v-card-title>
+
+        <v-card-text>
+          You are about to delete the following client credentials.
+        </v-card-text>
+
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">
+                  Name
+                </th>
+                <th class="text-left">
+                  Tier
+                </th>
+                <th class="text-left">
+                  Client ID
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ activeClient.name }}</td>
+                <td>{{ activeClient.client_metadata.tier }}</td>
+                <td>{{ activeClient.client_id }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="secondary" @click="confirmation=false">
+            Nevermind
+          </v-btn>
+          <v-btn class="primary" @click="removeClient(activeClient.client_id)">
+            Continue
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </v-card>
 </template>
 
@@ -50,6 +94,7 @@ export default {
   data () {
     return {
       showDialog: false,
+      confirmation: false,
       icons: {
         mdiTrashCanOutline, mdiNotificationClearAll
       },
@@ -67,11 +112,16 @@ export default {
           value: 'client_metadata.tier'
         },
         {
+          text: 'Client ID',
+          value: 'id'
+        },
+        {
           text: '',
           value: 'client_id'
         }
       ],
-      clients: []
+      clients: [],
+      activeClient: null
     }
   },
   async mounted () {
@@ -83,7 +133,10 @@ export default {
       this.progress.indeterminate = true
       const clients = await this.fetchClients()
       console.log(clients)
-      this.clients = clients.data
+      this.clients = clients.data.map(x => {
+        x.id = x.client_id
+        return x
+      })
       this.progress.indeterminate = false
     },
     async fetchClients () {
@@ -94,6 +147,10 @@ export default {
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/admin/clients?user_id=${userId}&per_page=${per_page}&page=${page}`)
       return response.data
+    },
+    areYouSure (id) {
+      this.activeClient = this.clients.find(x => x.client_id == id)
+      this.confirmation = true
     },
     async removeClient (id) {
       this.progress.indeterminate = true
@@ -109,7 +166,8 @@ export default {
         left: false
       }
       EventBus.$emit('announce', announcement)
-
+      this.activeClient = null
+      this.confirmation = false
       await this.refreshTable()
     },
     hideDialog () {

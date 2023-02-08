@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="show"
-            width="60%"
-            transition="dialog-bottom-transition"
-  >
-    <v-card>
+
+  <v-dialog v-model="show" width="60%" transition="dialog-bottom-transition">
+
+    <!-- Show create client form -->
+    <v-card v-if="showForm">
       <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
 
       <v-card-title>
@@ -49,7 +49,56 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <!-- Show client detail -->
+    <v-card v-else>
+      <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+
+      <v-card-title>
+        Client Credentials
+      </v-card-title>
+
+      <v-card-text>
+        This are your new client credentials. The Client ID and Client Secret will not be displayed again.
+        Please store these values and protect them like they were passwords.
+      </v-card-text>
+    
+      <v-simple-table>
+        <template v-slot:default>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <td>{{ client.name }}</td>
+            </tr>
+            <tr>
+              <th>Client ID</th>
+              <td>{{ client.client_id }}</td>
+            </tr>
+            <tr>
+              <th>Client Secret</th>
+              <td>{{ client.client_secret }}</td>
+            </tr>
+            <tr>
+              <th>Audience</th>
+              <td>{{ client.grants.audience }}</td>
+            </tr>
+            <tr>
+              <th>Scopes</th>
+              <td>{{ client.grants.scope.join(', ') }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn class="secondary" @click="close()">
+          Close
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
+
 </template>
 
 <script>
@@ -62,6 +111,7 @@ export default {
       progress: {
         indeterminate: false
       },
+      showForm: true,
       form: {
         name: {
           value: ''
@@ -77,7 +127,18 @@ export default {
         }
       },
       client: {
-
+        name: '',
+        client_id: '',
+        client_secret: '',
+        description: '',
+        client_metadata: {
+          tier: '',
+          user_id: ''
+        },
+        grants: {
+          audience: '',
+          scope: []
+        }
       }
     }
   },
@@ -91,7 +152,28 @@ export default {
   },
   methods: {
     close () {
+      this.resetAll()
       EventBus.$emit('hideClientDialog', null)
+    },
+    resetAll () {
+      this.form.name.value = ''
+      this.form.tier.value = 'freemium'
+      this.showForm = true
+      this.progress.indeterminate = false
+      this.client = {
+        name: '',
+        client_id: '',
+        client_secret: '',
+        description: '',
+        client_metadata: {
+          tier: '',
+          user_id: ''
+        },
+        grants: {
+          audience: '',
+          scope: []
+        }
+      }
     },
     async submit () {
       this.progress.indeterminate = true
@@ -105,7 +187,7 @@ export default {
       const response = await this.$http(accesstoken).post(`/admin/clients`, body)
       
       console.log(response.data)
-      this.client = response.data
+      this.client = response.data.data
       const announcement = {
         text: response.data.message,
         type: response.data.success ? 'success' : 'error',
@@ -114,7 +196,8 @@ export default {
         left: false
       }
       EventBus.$emit('announce', announcement)
-      EventBus.$emit('hideClientDialog', true)
+      this.progress.indeterminate = false
+      this.showForm = false
     }
   }
 }
