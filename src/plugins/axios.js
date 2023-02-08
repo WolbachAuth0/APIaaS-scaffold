@@ -8,7 +8,7 @@ import axios from 'axios'
 export default {
   install() {
 
-    Vue.prototype.$http = function (accesstoken, timeout=4000) {
+    Vue.prototype.$http = function (accesstoken, timeout=0) {
       const request = {
         baseURL: process.env.VUE_APP_API_HOST,
         timeout,
