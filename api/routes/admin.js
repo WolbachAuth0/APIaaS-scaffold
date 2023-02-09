@@ -5,14 +5,17 @@ const admin = require('./../controllers/admin')
 module.exports = router
 
 function checkJWTUserID (req, res, next) {
-  const customScopeKey = 'sub'
-  const failWithError = true
-  const orgIDs = [ req.params.user_id ]
-  return checkJWTScopes(orgIDs, { customScopeKey, failWithError })(req, res, next)
+  const userIDs = [ req.params.user_id ]
+  const options = {
+    customScopeKey: 'sub',
+    failWithError: true
+  }
+  return checkJWTScopes(userIDs, options)(req, res, next)
 }
 
 router.route('/profile/:user_id')
   .all(verifyJWT)
+  .all(checkJWTUserID)
   .get(
     admin.getUserProfile
   )
@@ -23,11 +26,11 @@ router.route('/profile/:user_id')
 
 router.route('/clients')
   .all(verifyJWT)
-  // .all(checkJWTUserID)
   .get(
     admin.listM2MClients
   )
   .post(
+    // schemaValidator(),
     admin.createM2MClient
   )
 
