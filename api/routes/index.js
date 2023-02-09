@@ -29,7 +29,7 @@ router
     try {
       const request = {
         method: 'post',
-        url: `https://${process.env.VUE_APP_DOMAIN}/oauth/token`,
+        url: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/oauth/token`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json'
