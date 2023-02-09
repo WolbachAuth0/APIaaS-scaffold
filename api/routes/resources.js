@@ -11,6 +11,11 @@ router
   .get(
     resources.list
   )
+  .post(
+    checkJWTPermissions(['create:resource']),
+    // schemaValidator(),
+    resources.create
+  )
 
 router
   .route('/:resource_id')
@@ -19,8 +24,18 @@ router
     checkJWTPermissions(['read:resource']),     // verify access token contains necessary permission(s)
     resources.getById                           // execute the get User by Id function
   )
+  .put(
+    checkJWTPermissions(['update:resource']),
+    // schemaValidator(),
+    resources.update
+  )
   .patch(
     checkJWTPermissions(['update:resource']),
     // schemaValidator(),
     resources.update
   )
+  .delete(
+    checkJWTPermissions(['delete:resource']),
+    resources.remove
+  )
+  
