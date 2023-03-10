@@ -59,17 +59,17 @@
           </v-list-item-content>
         </v-list-item>
 
-        <!-- <v-list-item to="/developer">
+        <v-list-item :href="apiSpecURL">
           <v-list-item-icon>
-            <v-icon>{{ icons.mdiCogOutline }}</v-icon>
+            <v-icon>{{ icons.mdiApi }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>
-              Developer
+              Documentation
             </v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
 
         <v-list-item v-if="$auth.isAuthenticated" @click="logout()" class="px-2 primary">
 					<v-list-item-icon>
@@ -105,6 +105,7 @@ import {
   mdiApplicationCog,
   mdiDeveloperBoard,
   mdiCogOutline,
+  mdiApi,
   mdiLogoutVariant,
   mdiLoginVariant
 } from '@mdi/js'
@@ -122,6 +123,7 @@ export default {
         mdiApplicationCog,
         mdiDeveloperBoard,
         mdiCogOutline,
+        mdiApi,
         mdiLogoutVariant,
         mdiLoginVariant
       }
@@ -133,6 +135,9 @@ export default {
 			const data = this.$auth.isAuthenticated ? this.$auth.user[`${clientID}/data`] : { }
 			const roles = data?.roles || []
       return roles
+    },
+    apiSpecURL () {
+      return `${process.env.VUE_APP_API_HOST}/specification`
     }
   },
   methods: {
