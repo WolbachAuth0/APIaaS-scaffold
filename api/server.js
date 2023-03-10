@@ -35,10 +35,13 @@ app.use('/', serveStatic(path.join(__dirname, './../dist')))
 const home = require('./routes')                  // The root endpoints
 const admin = require('./routes/admin')                  // The endpoints for the SPA
 const resources = require('./routes/resources')   // The External facing API endpoints
+const oauth = require('./routes/oauth')
 
 app.use('/api', home)
 app.use('/api/admin', admin)
+app.use('/api/v1/oauth', oauth)
 app.use('/api/v1/resources', resources)
+
 
 // this * route is to serve project on different page routes except root `/`
 app.get(/.*/, (req, res) => {
