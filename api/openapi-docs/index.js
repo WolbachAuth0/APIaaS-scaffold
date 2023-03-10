@@ -22,8 +22,8 @@ const specification = {
     },
     version: '1.0',
     'x-logo': {
-      url: '../img/okta-auth0-logo.svg',
-      altText: 'Okta | Auth0'
+      url: '../public/okta-logo-black.svg',
+      altText: 'Okta'
     }
   },
   servers: [
