@@ -5,7 +5,6 @@ class Resource {
 
   constructor ({ resource = 'posts' }) {
     // resource options are posts, comments, albums, photos
-    
     const request = {
       baseURL: `https://jsonplaceholder.typicode.com/${resource}`,
       headers: {
@@ -13,18 +12,17 @@ class Resource {
         'Accept': 'application/json'
       }
     }
-
-    const http = axios.create(request)
-    this.http 
+    this.config = request
+    this.http = axios.create(this.config)
   }
 
-  static async list (query) {
+  async list (query) {
     try {
-      const data = this.http.get('')
+      const response = await this.http.get('')
       const payload = {
         status: 200,
         message: `Listed all resources`,
-        data 
+        data: response.data
       }
       return payload
     } catch (error) {
@@ -33,14 +31,14 @@ class Resource {
     }
   }
 
-  static async getById ({ resource_id }) {
+  async getById ({ resource_id }) {
     try {
       // TODO: handle resource not found
-      const data = this.http.get(`/${resource_id}`)
+      const response = this.http.get(`/${resource_id}`)
       const payload = {
         status: 200,
         message: `Fetched resource with id ${resource_id}`,
-        data 
+        data: response.data
       }
       return payload
     } catch (error) {
@@ -49,7 +47,7 @@ class Resource {
     }
   }
 
-  static async create (body) {
+  async create (body) {
     try {
       
     } catch (error) {
@@ -58,7 +56,7 @@ class Resource {
     }
   }
 
-  static async update ({ resource_id }, body) {
+  async update ({ resource_id }, body) {
     try {
       
     } catch (error) {
@@ -67,7 +65,7 @@ class Resource {
     }
   }
 
-  static async remove ({ resource_id }) {
+  async remove ({ resource_id }) {
     try {
       
     } catch (error) {
