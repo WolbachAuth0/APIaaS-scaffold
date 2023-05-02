@@ -10,7 +10,8 @@ module.exports = {
 
 async function getToken (req, res, next) {
   // set the cache key to be the client_id + client_secret combination
-  const key = `${req.body.client_id}:${req.body.client_secret}`
+  // const key = `${req.body.client_id}:${req.body.client_secret}`
+  const key = req.body.client_id
   let data = {}
   let payload = {}
   
@@ -24,10 +25,14 @@ async function getToken (req, res, next) {
       // and cache it in REDIS
       payload = response.data
       cache.setDataByKey({ key, ttl: payload.expires_in, data: payload })
+      // flag the response as NOT from cache - FOR DEMO PURPOSE ONLY!
+      payload.fromCache = false
     } else {
       // we will return the payload to the requestor.
       logger.info(`cache hit! key: ${key}`)
-      payload = data
+      payload = JSON.parse(data)
+      // flag the response as from cache - FOR DEMO PURPOSE ONLY!
+      payload.fromCache = true
     }
 
     res.status(200).json(payload)
