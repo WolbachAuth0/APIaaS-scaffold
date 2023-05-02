@@ -1,12 +1,6 @@
 const { createClient } = require('redis')
 const { logger } = require('./logger')
 
-function handleError(err) {
-  logger.error(err.message)
-  logger.info('Something went wrong fetching data from cache.')
-  return { success: false, error: err.message }
-}
-
 /**
  * The Cache class manages the connection to the REDIS database. This class
  * is optimized for deploying the application to Heroku and using a REDIS
@@ -54,11 +48,7 @@ class Cache {
    * @param {string} parameters.key 
    */
   async getDataByKey ({ key }) {
-    try {
-      return await this.redis.get(key)
-    } catch (err) {
-      return handleError(err)
-    }
+    return await this.redis.get(key)
   }
 
   /**
@@ -70,12 +60,8 @@ class Cache {
    * @param {*} parameters.data The data to set
    */
   async setDataByKey ({ key, ttl, data }) {
-    try {
-      this.redis.set(key, JSON.stringify(data), { EX: ttl, NX: true })
-      return { success: true, error: null }
-    } catch {
-      return handleError(err)
-    }
+    this.redis.set(key, JSON.stringify(data), { EX: ttl, NX: true })
+    return { success: true, error: null }
   }
 
   /**
@@ -91,26 +77,22 @@ class Cache {
    * @param {Array} job.parameters The parameters to pass to the calculation method
    */
   async getCacheOrCalculate({ key, ttl, refresh, method, parameters }) {
-    try {
-      // try to fetch the data from cache
-      let data = {}
-      let fromCache = await this.getDataByKey({ key })
-      if (!!fromCache) {
-        // if the data already exists in the cache, parse it as JSON
-        logger.info(`cache hit! key = ${key}`)
-        data = JSON.parse(fromCache)
-      } else {
-        // else, use the method (function) to calculate the new data set ...
-        logger.info(`cache miss. key = ${key}`)
-        data = await method.apply(null, parameters)
-        // ... and store the new data in the cache.
-        await this.setDataByKey({ key, ttl, data })
-      }
-      // return the data
-      return data
-    } catch (err) {
-      return handleError(err)
+    // try to fetch the data from cache
+    let data = {}
+    let fromCache = await this.getDataByKey({ key })
+    if (!!fromCache) {
+      // if the data already exists in the cache, parse it as JSON
+      logger.info(`cache hit! key = ${key}`)
+      data = JSON.parse(fromCache)
+    } else {
+      // else, use the method (function) to calculate the new data set ...
+      logger.info(`cache miss. key = ${key}`)
+      data = await method.apply(null, parameters)
+      // ... and store the new data in the cache.
+      await this.setDataByKey({ key, ttl, data })
     }
+    // return the data
+    return data
   }
 }
 
