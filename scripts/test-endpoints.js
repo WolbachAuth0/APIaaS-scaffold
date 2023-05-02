@@ -43,6 +43,7 @@ async function getToken () {
     const body = {
       client_id: process.env.TEST_CLIENT_ID,
       client_secret: process.env.TEST_CLIENT_SECRET,
+      audience: process.env.TEST_AUDIENCE
     }
     const response = await axios.post('/token', body, config)
     return response.data
