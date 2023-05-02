@@ -1,0 +1,13 @@
+# Environment variables present in ALL environments
+
+VUE_APP_AUTH0_CLIENT_ID=<client-id-of-frontend-app>
+VUE_APP_AUTH0_DOMAIN=<domain-of-auth0-tenant>
+VUE_APP_CUSTOM_DOMAIN=<auth0-tenant-custom-domain>
+VUE_APP_AUTH0_AUDIENCE=<auth0-api-identifier>
+
+AUTH0_API_ID=<client-id-of-management-api-m2m-app>
+AUTH0_API_CLIENT_SECRET=<client-secret-of-management-api-m2m-app>
+
+REDIS_URL=<redis-url>
+REDIS_PASSWORD=<redis-password>
+REDIS_PORT=<redis-port>
