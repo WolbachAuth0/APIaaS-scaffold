@@ -20,7 +20,11 @@ class Cache {
           port: process.env.REDIS_PORT
       }
     })
-    this.redis = client
+    this.client = client
+  }
+
+  get redis () {
+    return this.client
   }
 
   async connect () {
@@ -60,40 +64,21 @@ class Cache {
    * @param {*} parameters.data The data to set
    */
   async setDataByKey ({ key, ttl, data }) {
-    this.redis.set(key, JSON.stringify(data), { EX: ttl, NX: true })
-    return { success: true, error: null }
+    const response = await this.redis.set(key, JSON.stringify(data), { EX: ttl, NX: true })
+    logger.info(response)
+    return response
   }
 
   /**
-   * Get existing data from the cache by key. If the data is not yet present in the cache,
-   * use the method (function) parameter to calculate the data. Then store that calculated
-   * data into the cache for later.
+   * Deletes the keys from memory
    * 
-   * @param {object} job
-   * @param {string} job.key Cache key to retreive data with
-   * @param {integer} job.ttl Time to live in seconds
-   * @param {integer} job.refresh
-   * @param {function} job.method The (async) function used to calculate the data.
-   * @param {Array} job.parameters The parameters to pass to the calculation method
+   * @param {object} parameters
+   * @param {String[]} parameters.keys The array of keys to be deleted.
    */
-  async getCacheOrCalculate({ key, ttl, refresh, method, parameters }) {
-    // try to fetch the data from cache
-    let data = {}
-    let fromCache = await this.getDataByKey({ key })
-    if (!!fromCache) {
-      // if the data already exists in the cache, parse it as JSON
-      logger.info(`cache hit! key = ${key}`)
-      data = JSON.parse(fromCache)
-    } else {
-      // else, use the method (function) to calculate the new data set ...
-      logger.info(`cache miss. key = ${key}`)
-      data = await method.apply(null, parameters)
-      // ... and store the new data in the cache.
-      await this.setDataByKey({ key, ttl, data })
-    }
-    // return the data
-    return data
+  async deleteKeys ({ keys }) {
+    return await this.redis.del(keys)
   }
+
 }
 
 const cache = new Cache()
