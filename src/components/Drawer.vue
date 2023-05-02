@@ -154,6 +154,7 @@ export default {
 					scope: 'openid profile email',
 				}
 				this.$auth.loginWithRedirect(options)
+        // this.$auth.loginWithPopup(options)
 			}
 		},
 		async logout () {
