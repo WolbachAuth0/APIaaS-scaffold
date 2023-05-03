@@ -77,12 +77,34 @@ VUE_APP_DOMAIN=http://localhost:8080
 
 ### Download and Run the Project
 
-Install my-project with npm
+Make sure that you have [NodeJS](https://nodejs.org/en) (v18 +), `npm` (v8.19.x +) and `git` installed on your machine.
+
+In a terminal, cd to your favorite project directory then clone this repository. 
 
 ```bash
-  npm install my-project
-  cd my-project
+cd myProjects
+git clone https://github.com/WolbachAuth0/APIaaS-scaffold.git
 ```
+
+Install the necessary node modules.
+
+```bash
+  cd this-project
+  npm install
+```
+
+To run this locally you'll need to run two processes simultatneously - the front end Vue application and the backend Express.js application. Open a second terminal. In one terminal, run the api. 
+
+```bash
+npm run dev-api
+```
+
+In the other terminal run the vue app.
+
+```bash
+npm run dev-front
+```
+
     
 ## Authors
 
