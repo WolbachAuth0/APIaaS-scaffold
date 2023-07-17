@@ -2,10 +2,21 @@
   This script builds the OpenAPI specification from the pieces in the 'spec' folder and saves the OpenAPI spec 
   as a .json and a .yaml file.
 */
+
+
 const jsonfile = require('jsonfile')
 // const yaml = require('json-to-pretty-yaml')
 // const fs = require('fs')
 const path = require('path')
+
+if (process.env.NODE_ENV == 'production') {
+  require('dotenv').config({ path: path.join(__dirname, './../.env') })
+  require('dotenv').config({ path: path.join(__dirname, './../.env.production') })
+} else {
+	require('dotenv').config({ path: path.join(__dirname, './../.env') })
+  require('dotenv').config({ path: path.join(__dirname, './../.env.development') })
+}
+console.log(`Building API Specification for ${process.env.NODE_ENV} environment ...`)
 
 const directory = path.join(__dirname, './../api/openapi-docs')
 
@@ -17,7 +28,7 @@ buildAPISpec(directory)
  * 
  * Usage
  * ```bash
- * npm run build
+ * npm run build-spec
  * ``` 
  * 
  * @param {string} directory 
