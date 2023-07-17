@@ -16,8 +16,16 @@ router
 router
   .route('/v1/specification')
   .get(async (req, res) => {
-    const openapispec = require('./../openapi-docs')
-    // const openapispec = await jsonfile.readFile(path.join(__dirname, '../openapi-docs/openapi.json'))
+    const environ = process.env.NODE_ENV
+    let openapispec = {}
+    if (environ == 'production') {
+      openapispec = await jsonfile.readFile(path.join(__dirname, '../openapi-docs/openapi.json'))
+    } else if (environ == 'development') {
+      openapispec = await jsonfile.readFile(path.join(__dirname, '../openapi-docs/openapi.dev.json'))
+    } else {
+      openapispec = require('./../openapi-docs')
+    }
+
     res.json(openapispec)
   })
 
