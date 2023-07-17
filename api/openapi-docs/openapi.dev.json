@@ -3,11 +3,11 @@
   "info": {
     "title": "Okta | Auth0 Custom DB Example API",
     "description": "# Introduction\n\nA key feature of Auth0 is to permit the Auth0 authorization server to proxy logins to external sources of users. This project is intended as an example of a custom DB connection into an Auth0. This page documents the RESTful API endpoints for that custom DB connection.\n\n## Source Code\n\nThis project is intended for use only as an example of how to connect Auth0 to an externally managed custom database. The <a href=\"https://github.com/WolbachAuth0/external-users-db\">source code</a> is available for Okta employees. It is not intended to represent production ready code.\n\n# Authentication\n\nThis API makes use of two types of authentication. The Basic Auth authentication scheme is used ONLY for the Login User endpoint. For all other endpoints, a bearer token (as a JWT) is appended in the authorization header.",
-    "termsOfService": "https://cic-external-api.herokuapp.com/terms",
+    "termsOfService": "http://localhost:8080/terms",
     "contact": {
       "name": "Aaron Wolbach",
       "email": "aaron.wolbach@okta.com",
-      "url": "https://cic-external-api.herokuapp.com/support"
+      "url": "http://localhost:8080/support"
     },
     "license": {
       "name": "UNLICENSED",
@@ -21,12 +21,12 @@
   },
   "servers": [
     {
-      "url": "https://cic-external-api.herokuapp.com/api",
-      "description": "production server"
+      "url": "http://localhost:8081/api",
+      "description": "development server"
     }
   ],
   "paths": {
-    "/v1/oauth/token": {
+    "/api/v1/oauth/token": {
       "post": {
         "summary": "Access Token",
         "description": "Use this endpoint with your client credentials to request access to the other RESTful endpoints.",
@@ -83,7 +83,7 @@
         }
       }
     },
-    "/v1/resources": {
+    "/api/v1/resources": {
       "get": {
         "summary": "List Resources",
         "description": "Find a list of resources which match the query parameters passed in the url",
@@ -208,7 +208,7 @@
         }
       }
     },
-    "/v1/resources/{resource_id}": {
+    "/api/v1/resources/{resource_id}": {
       "get": {
         "summary": "Get Resource by Id",
         "description": "Fetch the resources associated to the resource id passed in the url parameter.",
