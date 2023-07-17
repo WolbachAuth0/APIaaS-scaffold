@@ -16,7 +16,8 @@ router
 router
   .route('/v1/specification')
   .get(async (req, res) => {
-    const openapispec = await jsonfile.readFile(path.join(__dirname, '../openapi-docs/openapi.json'))
+    const openapispec = require('./../openapi-docs')
+    // const openapispec = await jsonfile.readFile(path.join(__dirname, '../openapi-docs/openapi.json'))
     res.json(openapispec)
   })
 
