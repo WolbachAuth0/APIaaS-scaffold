@@ -9,7 +9,7 @@ const specification = {
   info: {
     title: 'Okta | Auth0 Custom DB Example API',
     description: require('./description'),
-    termsOfService: `${process.env.BASE_URL}/terms`,
+    termsOfService: `${process.env.VUE_APP_DOMAIN}/terms`,
     contact: {
       name: 'Aaron Wolbach',
       email: 'aaron.wolbach@okta.com',
@@ -28,7 +28,7 @@ const specification = {
   },
   servers: [
     {
-      url: `${process.env.BASE_URL}`,
+      url: `${process.env.VUE_APP_API_HOST}`,
       description: `${process.env.NODE_ENV} server`
     }
   ],

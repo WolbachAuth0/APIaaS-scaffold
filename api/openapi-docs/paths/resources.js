@@ -1,7 +1,7 @@
 const { content } = require('./../helpers')
 
 module.exports = {
-  '/api/v1/resources': {
+  '/v1/resources': {
     get: {
       // tags: [ 'Resources' ],
       summary: 'List Resources',
@@ -40,7 +40,7 @@ module.exports = {
       // 'x-code-samples': sample.delete('/api/v1/resources/:resource_id')
     }
   },
-  '/api/v1/resources/{resource_id}': {
+  '/v1/resources/{resource_id}': {
     get: {
       // tags: [ 'Resources' ],
       summary: 'Get Resource by Id',
