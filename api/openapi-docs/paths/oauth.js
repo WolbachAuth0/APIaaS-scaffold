@@ -1,7 +1,7 @@
 const { content } = require('../helpers')
 
 module.exports = {
-  '/api/v1/oauth/tokan': {
+  '/api/v1/oauth/token': {
     post: {
       // tags: [ 'OAuth' ],
       summary: 'Access Token',
