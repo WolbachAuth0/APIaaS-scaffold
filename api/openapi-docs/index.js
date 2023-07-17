@@ -28,8 +28,8 @@ const specification = {
   },
   servers: [
     {
-      url: `${process.env.BASE_URL}/api/v1`,
-      description: `Production server`
+      url: `${process.env.BASE_URL}`,
+      description: `${process.env.NODE_ENV} server`
     }
   ],
   paths: Object.assign(
