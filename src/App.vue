@@ -95,11 +95,12 @@ export default {
 
 <style scoped>
 	main {
-		/* 
-		background-image: url('https://cdn.govexec.com/media/featured/okta_slate_bg_only.png');
-		background-image: url('https://images.ctfassets.net/23aumh6u8s0i/6yR7mLYRgJotnAKSDEt2J8/4984fa1f78c40db99683405db7becf27/auth0_okta_hero.png')
-		*/
-		background-image: url('https://cdn.govexec.com/media/featured/okta_background_accelerate.jpg');
+		
+		/* background-image: url('https://cdn.govexec.com/media/featured/okta_slate_bg_only.png'); */
+		/* background-image: url('https://images.ctfassets.net/23aumh6u8s0i/6yR7mLYRgJotnAKSDEt2J8/4984fa1f78c40db99683405db7becf27/auth0_okta_hero.png'); */
+		background-image: url('https://images.squarespace-cdn.com/content/v1/57d9e959d482e972e8434364/1635861082044-08BJQX7SG4ABF95K497R/shutterstock_1080548216.jpg?format=2000w');
+		/* background-image: url('https://cdn.govexec.com/media/featured/okta_background_accelerate.jpg'); */
+		/* background-image: url('https://raw.githubusercontent.com/WolbachAuth0/auth0-m2m-demo/main/public/purple-dots-2.jpeg'); */
 		background-size: cover;
 	}
 </style>
