@@ -10,8 +10,11 @@
 			class="primary accent-3"
 		>
 			<a id="logo" :href="oktahomeURL" target="__blank">
-				<v-img :src="logo" contain max-height="50" max-width="225"></v-img>
+				<v-img :src="aura" contain max-height="50" max-width="50"></v-img>
 			</a>
+			<!-- <a id="logo" :href="oktahomeURL" target="__blank">
+				<v-img :src="logo" contain max-height="40" max-width="175"></v-img>
+			</a> -->
 			
       <v-toolbar-title :class="{ 'white--text': !isDark }">
 				{{ appTitle }}

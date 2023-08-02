@@ -4,9 +4,11 @@ export default {
     isDark: true,
     theme: {
       dark: {
+        aura: require('../assets/okta-aura-white.png'),
         logo: require('../assets/okta-logo-white.svg')
       },
       light: {
+        aura: require('../assets/okta-aura-black.png'),
         logo: require('../assets/okta-logo-blue.svg'),
       }
     }
@@ -17,6 +19,9 @@ export default {
     },
     logo (state) {
       return state.isDark ? state.theme.dark.logo : state.theme.light.logo
+    },
+    aura (state) {
+      return state.isDark ? state.theme.dark.aura : state.theme.light.aura
     },
     otherLogo (state) {
       return state.isDark ? state.theme.light.logo : state.theme.dark.logo

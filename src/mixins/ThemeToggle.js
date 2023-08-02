@@ -5,6 +5,7 @@ export default {
     ...mapState([ 'isDark' ]),
     ...mapGetters({
       isDark: 'Theme/isDark',
+      aura: 'Theme/aura',
       logo: 'Theme/logo',
       otherLogo: 'Theme/otherLogo'
     }),
