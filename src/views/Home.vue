@@ -12,56 +12,41 @@
         </v-col>
       </v-row>
 
+      <v-tabs v-model="tab">
+        <v-tab>About</v-tab>
+        <v-tab>OAuth2</v-tab>
+        <v-tab>How it Works</v-tab>
+      </v-tabs>
 
-      <v-row>
-        <v-col cols=6>
-          <v-card>
-            <v-progress-linear value="100" height="20" class="primary--text"></v-progress-linear>
-            <v-card-title>
-              <h2>{{ main.title }}</h2>
-            </v-card-title>
-            <v-card-text v-for="(para, i) of main.paragraphs" :key="i">
-              
-              <v-card-title class="primary--text">{{ para.subtitle }}</v-card-title>
-              <div v-for="(text, j) of para.texts" :key="j">
-                <v-card-text>
-                  {{ text }}
-                </v-card-text>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
+      <v-tabs-items v-model="tab">
+        <v-tab-item><about-tab /></v-tab-item>
+        <v-tab-item><purpose-tab /></v-tab-item>
+        <v-tab-item><how-tab /></v-tab-item>
+      </v-tabs-items>
 
-        <v-col cols=6>
-          <v-card>
-            <v-progress-linear value="100" height="20" class="primary--text"></v-progress-linear>
-            <v-card-title>
-              {{ secondary.title }}
-            </v-card-title>
-
-            <v-card-text>{{ secondary.text }}</v-card-text>
-            
-            <v-card-text v-for="(para, i) of secondary.paragraphs" :key="i">             
-              <v-card-title class="primary--text">{{ para.subtitle }}</v-card-title>
-              <v-card-text>{{ para.text }}</v-card-text>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-      </v-row>
     </v-card>
   </v-card>
 </template>
 
 <script>
+import AboutTab from './../components/HomeTabs/AboutTab.vue'
+import PurposeTab from './../components/HomeTabs/PurposeTab.vue'
+import HowTab from './../components/HomeTabs/HowTab.vue'
+
 export default {
   name: 'Home',
   metaInfo: {
     title: 'Welcome',
   },
+  components: {
+    AboutTab,
+    PurposeTab,
+    HowTab
+  },
   data () {
     return {
       title: 'Welcome!',
+      tab: 0,
       main: {
         title: 'Register for API Credentials',
         paragraphs: [

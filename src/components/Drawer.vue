@@ -42,7 +42,7 @@
 
           <v-list-item-content>
             <v-list-item-title>
-              About
+              Home
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
