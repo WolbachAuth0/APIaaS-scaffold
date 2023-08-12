@@ -5,14 +5,13 @@ class M2MClient {
   constructor () {
     const scopes = [
       'read:users',
-      
+
       'create:clients',
       'read:clients',
       'update:clients',
       'delete:clients',
       'read:client_keys',
       'update:client_keys',
-      
       'create:client_grants',
       'read:client_grants',
       'update:client_grants',
@@ -111,7 +110,11 @@ class M2MClient {
           const isM2M = x.app_type == 'non_interactive'
           const clientUser = x?.client_metadata?.user_id
           const isForUser = user_id && clientUser ? clientUser == user_id : false
-          return isM2M && isForUser
+          if (user_id) {
+            return isM2M && isForUser
+          } else {
+            return isM2M && clientUser
+          }
         })
         .map(x => {
           return { 
@@ -167,7 +170,7 @@ class M2MClient {
 
   async remove ({ client_id, user_id }) {
     try {
-      const data = await this.api.deleteClient({ client_id, user_id  })
+      const data = await this.api.deleteClient({ client_id })
       const updateUser = await this.removeClientFromUser({ client_id, user_id  })
       const payload = {
         status: 200,
@@ -179,6 +182,8 @@ class M2MClient {
       return errorHandler(error)
     }
   }
+
+  // private methods
 
   // CRUD the Grants
   async createGrant ({ client_id, tier }) {
@@ -195,26 +200,29 @@ class M2MClient {
     
   }
 
-  // Update the User
+  // Users
   async getUserAppMetadata ({ user_id }) {
     // read the users app_metadata
-    const user = await this.api.getUser({ user_id })
-    let app_metadata = user.app_metadata || {}
-    const m2m_clients = app_metadata?.m2m_clients && Array.isArray(app_metadata.m2m_clients) ? app_metadata.m2m_clients : []
-    app_metadata.m2m_clients = m2m_clients
-    return app_metadata
+    let user = await this.api.users.get({ id: user_id })
+
+    // let app_metadata = user.app_metadata
+    // const m2m_clients = app_metadata?.m2m_clients && Array.isArray(app_metadata.m2m_clients) ? app_metadata.m2m_clients : []
+    // app_metadata.m2m_clients = m2m_clients
+    return user.app_metadata
   }
 
   async addClientToUser ({ user_id, }, { client_id, tier, name }) {
     // get the user's app_metadata
     const app_metadata = await this.getUserAppMetadata({ user_id })
+    // list the client_id's of the user's m2m_clients
+    const userClientIDs = app_metadata.m2m_clients.map(x => x.client_id)
     
-    // push the new client to the app metadata
-    const client = { client_id, tier, name }
-    if (app_metadata.m2m_clients.filter(x => x.client_id == client_id && x.tier == tier) == 0) {
-      app_metadata.m2m_clients.push(client)
+    // push the new client into the user.app_metadata.m2m_clients array ...
+    if (!userClientIDs.includes(client_id)) {
+      // but only if it's not a duplicate
+      app_metadata.m2m_clients.push({ client_id, tier, name })
     }
-    return await this.api.updateAppMetadata({ id: user_id }, app_metadata)
+    return await this.api.users.updateAppMetadata({ id: user_id }, app_metadata)
   }
 
   async removeClientFromUser ({ client_id, user_id }) {
