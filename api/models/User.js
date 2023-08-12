@@ -22,6 +22,23 @@ class User {
   get uuid () { return this._uuid }
   get connection () { return this._connection }
 
+  // STATIC METHODS
+
+  static async listAll ({ q=undefined, per_page=10, page=0 }) {
+    // Pagination settings.
+    const params = {
+      search_engine: 'v3',
+      q,
+      per_page,
+      page
+    }
+    const api = management([ 'read:users' ])
+    const users = await api.getUsers(params)
+    return users
+  }
+
+  // INSTANCE METHODS
+
   async getProfile () {
     try {
       const data = await this.api.getUser({ id: this.id })
