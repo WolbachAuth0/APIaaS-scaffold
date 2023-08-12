@@ -145,7 +145,8 @@ export default {
       const page = 0
 
       const accesstoken = await this.$auth.getTokenSilently()
-      const response = await this.$http(accesstoken).get(`/admin/clients?user_id=${userId}&per_page=${per_page}&page=${page}`)
+      const uri = encodeURI(`/admin/clients?per_page=${per_page}&page=${page}`)
+      const response = await this.$http(accesstoken).get(uri)
       return response.data
     },
     areYouSure (id) {

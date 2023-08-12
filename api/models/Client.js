@@ -102,18 +102,30 @@ class M2MClient {
   }
 
   async listAll ({ per_page, page }, user_id) {
-    const params = { per_page, page }
+    const startIdx = page * per_page
+    const stopIdx = startIdx + per_page - 1
     try {
-      const clients = await this.api.getClients(params)
+      let pageCount = 0
+      let stillMoreClients = true
+      let clients = []
+      while (stillMoreClients && pageCount < 100) {
+        const response = await this.api.getClients({ per_page: 100, page: pageCount, include_totals: true })
+        clients.push(...response.clients)
+        pageCount++
+        stillMoreClients = clients.length < response.total
+      }
+      
       const data = clients
         .filter(x => {
           const isM2M = x.app_type == 'non_interactive'
           const clientUser = x?.client_metadata?.user_id
-          const isForUser = user_id && clientUser ? clientUser == user_id : false
+          return isM2M && clientUser
+        })
+        .filter(x => {
           if (user_id) {
-            return isM2M && isForUser
+            return x.client_metadata.user_id == user_id
           } else {
-            return isM2M && clientUser
+            return true
           }
         })
         .map(x => {
@@ -129,6 +141,8 @@ class M2MClient {
             client_metadata: x.client_metadata
           }
         })
+        .slice(startIdx, stopIdx)
+      
       const payload = {
         status: 200,
         message: `Found ${data.length} M2M clients matching query.`,
