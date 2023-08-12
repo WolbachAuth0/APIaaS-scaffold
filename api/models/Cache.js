@@ -30,7 +30,7 @@ class Cache {
   async connect () {
     this.redis.on('error', function (err) {
       logger.info(`Redis Client Error: ${err.message}`)
-      console.error(error)
+      console.error(err)
     })
 
     return await this.redis.connect()
@@ -42,7 +42,11 @@ class Cache {
    * @returns 
    */
   async disconnect () {
-    return await this.redis.disconnect()
+    return await this.redis
+      .disconnect()
+      .then(disconnected => {
+        logger.info('Successfully disconnected from Redis Client.')
+      })
   }
 
   /**
