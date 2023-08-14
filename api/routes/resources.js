@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { verifyJWT } = require('./../middleware/auth')
+const { verifyJWT, checkJWTScopes } = require('./../middleware/auth')
 const schemaValidator = require('./../middleware/schemaValidator')
 const resources = require('./../controllers/resources')
 
