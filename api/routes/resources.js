@@ -1,9 +1,11 @@
 const router = require('express').Router()
-const { verifyJWT, checkJWTPermissions } = require('./../middleware/auth')
+const { verifyJWT } = require('./../middleware/auth')
 const schemaValidator = require('./../middleware/schemaValidator')
 const resources = require('./../controllers/resources')
 
 module.exports = router
+
+const options = { failWithError: true }
 
 router
   .route('/')
@@ -12,7 +14,7 @@ router
     resources.list
   )
   .post(
-    checkJWTPermissions(['create:resource']),
+    checkJWTScopes(['create:resource'], options),
     // schemaValidator(),
     resources.create
   )
@@ -21,21 +23,21 @@ router
   .route('/:resource_id')
   .all(verifyJWT)                               // verify signature on access token
   .get(
-    checkJWTPermissions(['read:resource']),     // verify access token contains necessary permission(s)
+    checkJWTScopes(['read:resource'], options),     // verify access token contains necessary permission(s)
     resources.getById                           // execute the get User by Id function
   )
   .put(
-    checkJWTPermissions(['update:resource']),
+    checkJWTScopes(['update:resource'], options),
     // schemaValidator(),
     resources.update
   )
   .patch(
-    checkJWTPermissions(['update:resource']),
+    checkJWTScopes(['update:resource'], options),
     // schemaValidator(),
     resources.update
   )
   .delete(
-    checkJWTPermissions(['delete:resource']),
+    checkJWTScopes(['delete:resource'], options),
     resources.remove
   )
   
