@@ -18,7 +18,7 @@ class Resource {
 
   async list (query) {
     try {
-      const response = await this.http.get('')
+      const response = await this.http.get('/')
       const payload = {
         status: 200,
         message: `Listed all resources`,
@@ -34,7 +34,7 @@ class Resource {
   async getById ({ resource_id }) {
     try {
       // TODO: handle resource not found
-      const response = this.http.get(`/${resource_id}`)
+      const response = await this.http.get(`/${resource_id}`)
       const payload = {
         status: 200,
         message: `Fetched resource with id ${resource_id}`,
@@ -49,7 +49,13 @@ class Resource {
 
   async create (body) {
     try {
-      
+      const response = await this.http.post(`/`, body)
+      const payload = {
+        status: 201,
+        message: `Created resource with id ${response.data.id}`,
+        data: response.data
+      }
+      return payload
     } catch (error) {
       console.log(error)
       return errorHandler(error)
@@ -58,7 +64,13 @@ class Resource {
 
   async update ({ resource_id }, body) {
     try {
-      
+      const response = await this.http.put(`/${resource_id}`, body)
+      const payload = {
+        status: 200,
+        message: `Updated resource with id ${response.data.id}`,
+        data: response.data
+      }
+      return payload
     } catch (error) {
       console.log(error)
       return errorHandler(error)
@@ -67,7 +79,13 @@ class Resource {
 
   async remove ({ resource_id }) {
     try {
-      
+      const response = await this.http.delete(`/${resource_id}`)
+      const payload = {
+        status: 200,
+        message: `Deleted resource with id ${response.data.id}`,
+        data: response.data
+      }
+      return payload
     } catch (error) {
       console.log(error)
       return errorHandler(error)
