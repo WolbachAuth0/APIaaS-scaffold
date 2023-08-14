@@ -23,7 +23,7 @@ router
   .route('/:resource_id')
   .all(verifyJWT)                               // verify signature on access token
   .get(
-    checkJWTScopes(['read:resource'], options),     // verify access token contains necessary permission(s)
+    checkJWTScopes(['read:resource'], options), // verify access token contains necessary permission(s)
     resources.getById                           // execute the get User by Id function
   )
   .put(
