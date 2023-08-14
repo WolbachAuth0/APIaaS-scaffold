@@ -82,7 +82,7 @@ class Resource {
       const response = await this.http.delete(`/${resource_id}`)
       const payload = {
         status: 200,
-        message: `Deleted resource with id ${response.data.id}`,
+        message: `Deleted resource with id ${resource_id}`,
         data: response.data
       }
       return payload
