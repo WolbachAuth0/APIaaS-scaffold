@@ -1,5 +1,5 @@
 <template>
-		<v-navigation-drawer app floating clipped dark permanent class="dark primary">
+		<v-navigation-drawer app floating clipped absolute dark permanent height="100%" class="dark primary">
 
       <!-- user avatar -->
       <v-list nav>							
@@ -35,9 +35,10 @@
       <!-- user specific navigation -->
       <v-list dense nav>
 
+        <!-- Home -->
         <v-list-item to="/">
           <v-list-item-icon>
-            <v-icon>{{ icons.mdiHomeCircle }}</v-icon>
+            <v-icon color="accent">{{ icons.mdiHomeCircle }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -47,9 +48,10 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- User Profile -->
         <v-list-item v-if="$auth.isAuthenticated" to="/profile">
           <v-list-item-icon>
-            <v-icon>{{ icons.mdiAccountDetails }}</v-icon>
+            <v-icon color="accent">{{ icons.mdiAccountDetails }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -59,9 +61,23 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- Try it out! -->
+        <v-list-item v-if="$auth.isAuthenticated" to="/try-it">
+          <v-list-item-icon>
+            <v-icon color="accent">{{ icons.mdiKeyVariant }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              Access the API
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <!-- API Docs -->
         <v-list-item :href="apiSpecURL">
           <v-list-item-icon>
-            <v-icon>{{ icons.mdiApi }}</v-icon>
+            <v-icon color="accent">{{ icons.mdiApi }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -71,9 +87,10 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- Logout -->
         <v-list-item v-if="$auth.isAuthenticated" @click="logout()" class="px-2 primary">
 					<v-list-item-icon>
-						<v-icon>{{ icons.mdiLogoutVariant }}</v-icon>
+						<v-icon color="accent">{{ icons.mdiLogoutVariant }}</v-icon>
 					</v-list-item-icon>
 
 					<v-list-item-content>
@@ -81,9 +98,10 @@
 					</v-list-item-content>
 				</v-list-item>
 
+        <!-- Login -->
         <v-list-item v-if="!$auth.isAuthenticated" @click="authenticate()" class="px-2 primary">
 					<v-list-item-icon>
-						<v-icon>{{ icons.mdiLoginVariant }}</v-icon>
+						<v-icon color="accent">{{ icons.mdiLoginVariant }}</v-icon>
 					</v-list-item-icon>
 
 					<v-list-item-content>
@@ -107,7 +125,8 @@ import {
   mdiCogOutline,
   mdiApi,
   mdiLogoutVariant,
-  mdiLoginVariant
+  mdiLoginVariant,
+  mdiKeyVariant
 } from '@mdi/js'
 
 export default {
@@ -125,7 +144,8 @@ export default {
         mdiCogOutline,
         mdiApi,
         mdiLogoutVariant,
-        mdiLoginVariant
+        mdiLoginVariant,
+        mdiKeyVariant
       }
     }
   },
