@@ -12,17 +12,23 @@
         </v-col>
       </v-row>
 
-      <v-tabs v-model="tab">
-        <v-tab>About</v-tab>
-        <v-tab>OAuth2</v-tab>
-        <v-tab>How it Works</v-tab>
-      </v-tabs>
+      <v-row>
+        <v-col cols=12>
+          <v-card>
+            <v-tabs v-model="tab">
+              <v-tab>About</v-tab>
+              <v-tab>OAuth2</v-tab>
+              <v-tab>How it Works</v-tab>
+            </v-tabs>
 
-      <v-tabs-items v-model="tab">
-        <v-tab-item><about-tab /></v-tab-item>
-        <v-tab-item><purpose-tab /></v-tab-item>
-        <v-tab-item><how-tab /></v-tab-item>
-      </v-tabs-items>
+            <v-tabs-items v-model="tab">
+              <v-tab-item><about-tab /></v-tab-item>
+              <v-tab-item><purpose-tab /></v-tab-item>
+              <v-tab-item><how-tab /></v-tab-item>
+            </v-tabs-items>
+          </v-card>
+        </v-col>
+      </v-row>
 
     </v-card>
   </v-card>
