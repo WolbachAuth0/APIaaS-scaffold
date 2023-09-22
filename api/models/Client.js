@@ -18,7 +18,7 @@ class M2MClient {
       'delete:client_grants'
     ]
     this.api = management(scopes)
-    this._audience = 'https://cic-external-api.herokuapp.com/api'
+    this._audience = process.env.VUE_APP_AUTH0_AUDIENCE
   }
 
   get audience () { return this._audience }
@@ -133,7 +133,7 @@ class M2MClient {
             tenant: x.tenant,
             name: x.name,
             client_id: x.client_id,
-            // client_secret: x.client_secret,
+            client_secret: x.client_secret,
             jwt_configuration: x.jwt_configuration,
             token_endpoint_auth_method: x.token_endpoint_auth_method,
             app_type: x.app_type,
