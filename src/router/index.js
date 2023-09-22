@@ -6,6 +6,7 @@ import Meta from 'vue-meta'
 // Views
 import Home from '@/views/Home.vue'
 import Profile from '@/views/Profile.vue'
+import AccessAPI from '@/views/AccessAPI.vue'
 
 Vue.use(Meta, {
 	keyName: 'metaInfo',
@@ -28,6 +29,12 @@ const router = new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
+      beforeEnter: authGuard
+    },
+    {
+      path: '/try-it',
+      name: 'Access API',
+      component: AccessAPI,
       beforeEnter: authGuard
     }
   ]
