@@ -1,6 +1,13 @@
 <template>
   <v-card>
-    <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+    <v-progress-linear 
+      :indeterminate="progress.indeterminate" 
+      value="100" 
+      height="20" 
+      class="primary--text"
+      :color="progress.indeterminate ? 'accent' : 'secondary'"
+    >
+    </v-progress-linear>
     
     <v-card-title class="primary--text">
       User Profile
@@ -80,7 +87,7 @@
       <v-container>
         <v-row>
           <v-col cols=12>
-            <v-btn class="primary" block @click="updateProfile">
+            <v-btn class="accent" block @click="updateProfile">
               Save Changes
             </v-btn>
           </v-col>

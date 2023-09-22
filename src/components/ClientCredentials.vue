@@ -1,6 +1,13 @@
 <template>
   <v-card>
-    <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+    <v-progress-linear 
+      :indeterminate="progress.indeterminate" 
+      value="100" 
+      height="20" 
+      class="primary--text"
+      :color="progress.indeterminate ? 'accent' : 'secondary'"
+    >
+    </v-progress-linear>
     
     <v-card-title class="primary--text">Your API Credentials</v-card-title>
 
@@ -22,7 +29,7 @@
     </v-data-table>
 
     <v-card-actions>
-      <v-btn class="primary" block @click="showDialog = true">
+      <v-btn class="accent" block @click="showDialog = true">
         Create New Client Credential
       </v-btn>
     </v-card-actions>
@@ -31,7 +38,14 @@
 
     <v-dialog v-model="confirmation" width="60%" transition="dialog-bottom-transition">
       <v-card>
-        <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+        <v-progress-linear 
+          :indeterminate="progress.indeterminate" 
+          value="100" 
+          height="20" 
+          class="primary--text"
+          :color="progress.indeterminate ? 'accent' : 'primary'"
+        >
+        </v-progress-linear>
         
         <v-card-title>
           Are you sure?
@@ -71,7 +85,7 @@
           <v-btn class="secondary" @click="confirmation=false">
             Nevermind
           </v-btn>
-          <v-btn class="primary" @click="removeClient(activeClient.client_id)">
+          <v-btn class="accent" @click="removeClient(activeClient.client_id)">
             Continue
           </v-btn>
         </v-card-actions>
@@ -140,7 +154,6 @@ export default {
       this.progress.indeterminate = false
     },
     async fetchClients () {
-      const userId = this.$auth.user.sub
       const per_page = 10
       const page = 0
 

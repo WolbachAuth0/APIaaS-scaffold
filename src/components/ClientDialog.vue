@@ -4,7 +4,14 @@
 
     <!-- Show create client form -->
     <v-card v-if="showForm">
-      <v-progress-linear :indeterminate="progress.indeterminate" value="100" height="20" class="primary--text"></v-progress-linear>
+      <v-progress-linear 
+      :indeterminate="progress.indeterminate" 
+      value="100" 
+      height="20" 
+      class="primary--text"
+      :color="progress.indeterminate ? 'accent' : 'secondary'"
+    >
+    </v-progress-linear>
 
       <v-card-title>
         Create New Client
@@ -44,7 +51,7 @@
         <v-btn class="secondary" @click="close()">
           Close
         </v-btn>
-        <v-btn class="primary" @click="submit()">
+        <v-btn class="accent" @click="submit()">
           Submit
         </v-btn>
       </v-card-actions>
@@ -92,8 +99,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="secondary" @click="close()">
-          Close
+        <v-btn class="accent" @click="close()">
+          Okay
         </v-btn>
       </v-card-actions>
     </v-card>
