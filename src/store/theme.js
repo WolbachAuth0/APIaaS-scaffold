@@ -5,11 +5,13 @@ export default {
     theme: {
       dark: {
         aura: require('../assets/okta-aura-white.png'),
-        logo: require('../assets/okta-logo-white.svg')
+        logo: require('../assets/okta-logo-white.svg'),
+        auth0ByOkta: require('../assets/auth0-by-okta-white.svg')
       },
       light: {
         aura: require('../assets/okta-aura-black.png'),
         logo: require('../assets/okta-logo-blue.svg'),
+        auth0ByOkta: require('../assets/auth0-by-okta-black.svg')
       }
     }
   },
@@ -22,6 +24,9 @@ export default {
     },
     aura (state) {
       return state.isDark ? state.theme.dark.aura : state.theme.light.aura
+    },
+    auth0ByOkta (state) {
+      return state.isDark ? state.theme.dark.auth0ByOkta : state.theme.light.auth0ByOkta
     },
     otherLogo (state) {
       return state.isDark ? state.theme.light.logo : state.theme.dark.logo

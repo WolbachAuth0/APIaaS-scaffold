@@ -23,7 +23,7 @@ const okta = {
       primary: colors.grey.darken4, // okta black
       secondary: '#20313b',
       info: '#2958ac',
-      accent: colors.grey.base,
+      accent: colors.blue.base,
       lightgrey: colors.grey.lighten2,
       darkgrey: '#191919'
     }
