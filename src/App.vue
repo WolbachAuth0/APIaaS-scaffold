@@ -43,11 +43,11 @@ export default {
 		Navigation
 	},
 	metaInfo: {
-		titleTemplate: 'External API Okta Demo | %s'
+		titleTemplate: 'API Authorization Demo | %s'
 	},
 	data() {
 		return {
-			appTitle: `External API Okta Demo`,
+			appTitle: `External API Authorization Demo`,
 			alert: {
         visible: false,
         text: '',
