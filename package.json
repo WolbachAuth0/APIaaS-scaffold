@@ -34,6 +34,7 @@
     "jsonfile": "^6.1.0",
     "jsonschema": "^1.4.0",
     "jwks-rsa": "^2.0.5",
+    "prismjs": "^1.29.0",
     "redis": "^4.6.6",
     "serve-static": "^1.14.1",
     "vue": "^2.6.14",
