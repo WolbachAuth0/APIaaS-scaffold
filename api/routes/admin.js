@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { verifyUserJWT, checkJWTScopes, checkJWTPermissions } = require('./../middleware/auth')
+const { verifyJWT, checkJWTScopes } = require('./../middleware/auth')
 const admin = require('./../controllers/admin')
 
 module.exports = router
@@ -14,7 +14,7 @@ function checkJWTUserID (req, res, next) {
 }
 
 router.route('/profile/:user_id')
-  .all(verifyUserJWT)
+  .all(verifyJWT)
   .all(checkJWTUserID)
   .get(
     admin.getUserProfile
@@ -25,7 +25,7 @@ router.route('/profile/:user_id')
   )
 
 router.route('/clients')
-  .all(verifyUserJWT)
+  .all(verifyJWT)
   .get(
     admin.listM2MClients
   )
@@ -35,7 +35,7 @@ router.route('/clients')
   )
 
 router.route('/clients/:client_id')
-  .all(verifyUserJWT)  
+  .all(verifyJWT)  
   .get(
     admin.getM2MClientById
   )

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { verifyClientCredJWT, checkJWTScopes } = require('./../middleware/auth')
+const { verifyJWT, checkJWTScopes } = require('./../middleware/auth')
 const schemaValidator = require('./../middleware/schemaValidator')
 const resources = require('./../controllers/resources')
 
@@ -9,7 +9,7 @@ const options = { failWithError: true }
 
 router
   .route('/')
-  .all(verifyClientCredJWT)
+  .all(verifyJWT)
   .get(
     resources.list
   )
@@ -21,7 +21,7 @@ router
 
 router
   .route('/:resource_id')
-  .all(verifyClientCredJWT)                               // verify signature on access token
+  .all(verifyJWT)                               // verify signature on access token
   .get(
     checkJWTScopes(['read:resource'], options), // verify access token contains necessary permission(s)
     resources.getById                           // execute the get User by Id function
