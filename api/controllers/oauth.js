@@ -47,7 +47,7 @@ async function getToken (req, res, next) {
 async function fetchTokenFromCIC ({ client_id, client_secret, audience }) {
   const request = {
     method: 'post',
-    url: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/oauth/token`,
+    url: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/oauth/token`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json'
