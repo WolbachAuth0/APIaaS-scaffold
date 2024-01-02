@@ -13,7 +13,8 @@
     "test:endpoints": "node ./scripts/test-endpoints.js",
     "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build --mode production",
-    "deploy": "git push heroku main --no-verify"
+    "deploy": "git push heroku main --no-verify",
+    "clear-cache": "node ./scripts/clear-cache.js"
   },
   "keywords": [],
   "author": "",

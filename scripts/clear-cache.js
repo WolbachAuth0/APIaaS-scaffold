@@ -9,7 +9,7 @@ async function main () {
     console.log('connecting to REDIS ...')
     await cache.connect()
     console.log('connected. fetching keys ...')
-    const keys = await cache.redis.keys('QuMz1*')
+    const keys = await cache.redis.keys('*')
     console.log('keys found: ', keys)
     if (keys.length > 0) {
       const response = await cache.deleteKeys({ keys })
