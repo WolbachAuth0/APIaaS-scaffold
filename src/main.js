@@ -6,6 +6,7 @@ import App from '@/App.vue'
 import Axios from '@/plugins/axios'
 import vuetify from '@/plugins/vuetify'
 import { Auth0Plugin } from '@/plugins/auth0'
+import VueHighlightJS from 'vue-highlightjs'
 
 // mixins
 import ThemeMixin from '@/mixins/ThemeToggle'
@@ -22,6 +23,7 @@ Vue.use(Auth0Plugin, {
     router.push(appState && appState.targetUrl ? appState.targetUrl : window.location.pathname)
   }
 })
+Vue.use(VueHighlightJS)
 Vue.config.errorHandler = function (err, vm, info) {
   console.error(err)
   console.log(info)

@@ -76,7 +76,9 @@
 
                           <v-card-subtitle>POST {{ audience }}/oauth/token</v-card-subtitle>
                           <v-card-subtitle>Request Body</v-card-subtitle>
-                          <pre v-if="tokenRequestBody"><code class="language-javascript">{{ tokenRequestBody | pretty }}</code></pre>
+                          <v-card-text>
+                            <pre v-highlightjs><code class="json">{{ tokenRequestBody }}</code></pre>
+                          </v-card-text>
                         </v-col>
                       </v-row>
                     </v-card>
@@ -115,10 +117,8 @@
 </template>
 
 <script>
-import Prism from 'prismjs'
-import 'prismjs/themes/prism.css'
-
 export default {
+
   data () {
     return {
       progress: {
@@ -130,17 +130,17 @@ export default {
           {
             name: 'Choose Client',
             number: 1,
-            description: 'Select which of the user\'s registered client credentials to use for this test.'
+            description: `Here is a list of the client credentials that have previously been registered for the active user. Select which of the user's registered client credentials to use for this test.`
           },
           {
             name: 'Request Access Token',
             number: 2,
-            description: 'Use the selected client credentials to request an access token for the API.'
+            description: 'The next step is to get an access token. With the selected client credentials, we reach out to the /oauth/token endpoint to request access to the API. This is a POST request and we send the selected client credentials over. '
           },
           {
             name: 'Select API Endpoint',
             number: 3,
-            description: 'Decide which API endpoint you want to access for this test.'
+            description: 'Now that we have received an access token for the API, we need to decide which API endpoint to access. Here is a list of the endpoints which your token grants you access to. Select one.'
           },
           {
             name: 'Make Request',
@@ -159,9 +159,7 @@ export default {
         list: []
       },
       showSecret: false,
-      accessToken: {
-        raw: {}
-      },
+      tokenResponse: {},
       endpoint: {
         url: ''
       },
@@ -169,7 +167,7 @@ export default {
     }
   },
   filters: {
-    pretty: function(value) {
+    pretty (value) {
       return JSON.stringify(JSON.parse(value), null, 2);
     }
   },
@@ -189,15 +187,16 @@ export default {
     },
     tokenRequestBody () {
       const client = this.selectedClient
+      let body = {}
       if (client) {
-        return JSON.stringify({
+        body = {
           client_id: client.client_id,
           client_secret: client.client_secret,
           audience: process.env.VUE_APP_AUTH0_AUDIENCE
-        }).trim()
-      } else {
-        return JSON.stringify({}).trim()
+        }
       }
+      console.log(body)
+      return JSON.stringify(body, null, 2)
     },
     nextStep () {
       return this.stepper.active == 5 ? 1 : this.stepper.active + 1
@@ -212,10 +211,6 @@ export default {
     console.log(clients)
     this.credentials.list = clients.data
     this.progress.indeterminate = false
-
-    window.Prism = window.Prism || {};
-    window.Prism.manual = true;
-    Prism.highlightAll();
   },
   methods: {
     async fetchClients () {
@@ -227,14 +222,21 @@ export default {
       const response = await this.$http(accesstoken).get(uri)
       return response.data
     },
-    async getAccessToken () {},
+    async getAccessToken () {
+      this.progress.indeterminate = true
+      const response = await this.$http().post(`/v1/oauth/token`, this.tokenRequestBody)
+      this.progress.indeterminate = false
+      return response.data
+    },
     async doStep (stepNumber) {
       switch (stepNumber) {
         case 1:
           // select which client credential to use
           break
         case 2:
-          
+          const data = await this.getAccessToken()
+          this.tokenResponse = data
+          console.log(data)
           break
         case 3:
           // select an API endpoint to access
@@ -259,12 +261,6 @@ export default {
 }
 </script>
 
-<style scoped>
-  /* pre.json {
-    font-family: monospace, monospace;
-    display: block;
-    overflow: scroll;
-    color: white;
-    background: #282a36;
-  } */
+<style>
+  @import '../../node_modules/highlight.js/styles/stackoverflow-dark.css';
 </style>
