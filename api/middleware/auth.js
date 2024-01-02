@@ -4,29 +4,37 @@ const checkJWTScopes = require('express-jwt-authz')
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')   
 
-// OIDC middleware
-const oidcMiddleware = auth({
-  authRequired: false,
-  auth0Logout: true,
-  issuerBaseURL:  `https://${process.env.VUE_APP_DOMAIN}`,
-  baseURL: `${process.env.VUE_APP_DOMAIN}/`,
-  clientID: process.env.VUE_APP_AUTH0_CLIENT_ID,
-  secret: process.env.AUTH0_API_CLIENT_SECRET,
-  idpLogout: true,
-})
-
-// JWT checker
-const verifyJWT = jwt({
+/**
+ * Verify JWT issued by /token endpoint for Client Credentials
+ * 
+ * NOTE: This expects the token issuer to be the auth0 tenant domain.
+ */ 
+const verifyClientCredJWT = jwt({
   secret: jwks.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    // jwksUri: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/.well-known/jwks.json`
     jwksUri: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/.well-known/jwks.json`
   }),
   audience: process.env.VUE_APP_AUTH0_AUDIENCE,
   issuer: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/`,
-  // issuer: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/`,
+  algorithms: ['RS256']
+})
+
+/**
+ * Verify JWT issued via Authorization Code Flow w/PKCE to user
+ * 
+ * NOTE: This expects the token issuer to be the custom domain.
+ */ 
+const verifyUserJWT = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/.well-known/jwks.json`
+  }),
+  audience: process.env.VUE_APP_AUTH0_AUDIENCE,
+  issuer: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/`,
   algorithms: ['RS256']
 })
 
@@ -37,8 +45,8 @@ function checkJWTPermissions (permissions) {
 }
 
 module.exports = {
-  oidcMiddleware,
-  verifyJWT,
+  verifyClientCredJWT,
+  verifyUserJWT,
   requiresAuth,
   checkJWTScopes,
   checkJWTPermissions
