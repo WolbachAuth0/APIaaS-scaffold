@@ -12,6 +12,7 @@
 							 @hide="hideAnnouncer"
 		></announcer>
 
+		<github-ribbon :url="github"/>
 		
 		<v-fade-transition mode="out-in" duration type="animation">
 			<v-main light>	
@@ -33,6 +34,7 @@
 
 <script>
 import Announcer from './components/Announcer.vue'
+import GithubRibbon from './components/GithubRibbon.vue'
 import Navigation from './components/Navigation.vue'
 import EventBus from './helpers/eventBus.js'
 
@@ -40,7 +42,8 @@ export default {
 	name: 'app',
 	components: {
 		Announcer,
-		Navigation
+		Navigation,
+		GithubRibbon
 	},
 	metaInfo: {
 		titleTemplate: 'API Authorization Demo | %s'
@@ -48,6 +51,7 @@ export default {
 	data() {
 		return {
 			appTitle: `External API Authorization Demo`,
+			github: 'https://github.com/WolbachAuth0/APIaaS-scaffold',
 			alert: {
         visible: false,
         text: '',
