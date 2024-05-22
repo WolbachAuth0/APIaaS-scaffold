@@ -38,6 +38,7 @@ const oauth = require('./routes/oauth')
 
 app.use('/api', home)
 app.use('/api/admin', admin)
+app.use('/api/v1/admin', admin)
 app.use('/api/v1/oauth', oauth)
 app.use('/api/v1/resources', resources)
 
