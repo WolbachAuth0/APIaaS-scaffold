@@ -7,7 +7,7 @@
 const specification = {
   openapi: '3.0.3',
   info: {
-    title: 'Okta | Auth0 Custom DB Example API',
+    title: 'Okta | Auth0 OAuth API Example',
     description: require('./description'),
     termsOfService: `${process.env.VUE_APP_DOMAIN}/terms`,
     contact: {
