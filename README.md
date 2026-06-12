@@ -10,7 +10,7 @@ Building REST API's with authorization layers and the ability for customers to s
 
 - Provides a user interface to allow users to self service request a set of client credentials to access the API.
 - Demonstrates how access token scopes can be used to authorize calls to the REST endpoints of the API.
-- Demonstrates how to proxy the /token endpoint and to use a cache to limit the number of M2M tokens that are issued from Okta C.I.C.
+- Demonstrates how to proxy the /token endpoint and to use a cache to limit the number of M2M tokens that are issued from Auth0
 
 
 
@@ -116,7 +116,7 @@ npm run dev-front
 The following products form core technologies for this project. Links to them are provided for reference.
 
 - [NodeJS](https://nodejs.org/en)
-- [Okta CIC | Auth0](https://auth0.com)
+- [Auth0](https://auth0.com)
 - [REDIS Enterprise Cloud](https://redis.com/try-free/)
 - [VueJS](https://vuejs.org/)
 - [Vuetify](https://vuetifyjs.com/en/)
