@@ -67,7 +67,7 @@ VUE_APP_DOMAIN=http://localhost:8080
 
 ## Installation
 
-### Setup Okta Customer Identity Cloud (CIC)
+### Setup Auth0
 
 // TODO: instructions for configuring Auth0 to use this application.
 
